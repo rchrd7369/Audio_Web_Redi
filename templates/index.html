@@ -6,44 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio File Info</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100">
 
     <!-- Background Section -->
-    <div class="h-screen bg-gradient-to-b from-blue-500 to-blue-200 relative flex items-center justify-center">
-        <div class="text-white text-center py-32">
-            <h1 class="text-4xl font-bold">Scroll Down to See the Form</h1>
-        </div>
-        <!-- Waktu Indonesia -->
-        <div class="absolute bottom-10 text-white text-2xl font-semibold" id="time">
-            <!-- Waktu Indonesia akan muncul di sini -->
-        </div>
+    <div class="h-screen bg-gradient-to-b from-indigo-500 to-indigo-300 flex flex-col items-center justify-center text-white text-center">
+        <h1 class="text-4xl font-bold mb-4">Selamat Datang</h1>
+        <p class="text-lg">Scroll ke bawah untuk memulai proses</p>
+        <div class="absolute bottom-10 text-white text-2xl font-semibold" id="time"></div>
     </div>
 
     <!-- Form Section -->
-    <div id="form-container" class="opacity-0 transition-opacity duration-700 flex justify-center items-center h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-96 text-center">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Pilih Folder untuk Memulai</h1>
-
+    <div id="form-container" class="fade-in flex justify-center items-center h-screen">
+        <div class="bg-white p-8 rounded-2xl shadow-lg w-96 text-center">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Pilih Folder</h1>
             <form action="/process_folder" method="POST" class="space-y-4">
-                <div class="flex flex-col">
+                <div class="flex flex-col text-left">
                     <label for="folder" class="text-gray-700 font-medium">Folder Path:</label>
-                    <input type="text" id="folder" name="folder"
-                        class="mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
+                    <input type="text" id="folder" name="folder" class="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                 </div>
-
-                <div class="flex justify-center">
-                    <button type="submit"
-                        class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200">Proses</button>
-                </div>
+                <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300">Proses</button>
             </form>
         </div>
     </div>
 
-    <!-- Link ke file JavaScript -->
-    <script src="/static/script.js"></script>
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("scroll", function () {
+            let formContainer = document.getElementById("form-container");
+            let position = formContainer.getBoundingClientRect().top;
+            let screenHeight = window.innerHeight;
+            if (position < screenHeight - 100) {
+                formContainer.classList.add("visible");
+            }
+        });
+
+        function updateTime() {
+            const timeElement = document.getElementById("time");
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
 
 </body>
 
