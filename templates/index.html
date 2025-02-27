@@ -6,45 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio File Info</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100">
-
+<body class="bg-gray-100 font-sans">
     <!-- Background Section -->
-    <div class="h-screen bg-gradient-to-b from-blue-500 to-blue-200 relative flex items-center justify-center">
-        <div class="text-white text-center py-32">
-            <h1 class="text-4xl font-bold">Scroll Down to See the Form</h1>
-        </div>
+    <div class="h-screen bg-gradient-to-b from-blue-600 to-blue-300 flex flex-col justify-center items-center text-white text-center relative">
+        <h1 class="text-5xl font-extrabold mb-4 animate-fade-in">Selamat Datang</h1>
+        <p class="text-lg opacity-80 animate-fade-in"> scroll ke bawah untuk memulai</p>
+        
         <!-- Waktu Indonesia -->
-        <div class="absolute bottom-10 text-white text-2xl font-semibold" id="time">
-            <!-- Waktu Indonesia akan muncul di sini -->
+        <div class="absolute bottom-10 text-xl font-semibold" id="time-container">
+            <p class="text-sm">Waktu Saat Ini:</p>
+            <span id="time" class="text-lg font-bold"></span>
         </div>
+
+        <button onclick="smoothScrollToForm()" class="mt-8 px-6 py-3 bg-white text-blue-600 font-semibold rounded-full shadow-md hover:bg-gray-200 transition duration-300">Mulai</button>
     </div>
 
     <!-- Form Section -->
-    <div id="form-container" class="opacity-0 transition-opacity duration-700 flex justify-center items-center h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-96 text-center">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Pilih Folder untuk Memulai</h1>
-
-            <form action="/process_folder" method="POST" class="space-y-4">
-                <div class="flex flex-col">
-                    <label for="folder" class="text-gray-700 font-medium">Folder Path:</label>
-                    <input type="text" id="folder" name="folder"
-                        class="mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
+    <div id="form-container" class="flex justify-center items-center min-h-screen opacity-0 transition-opacity duration-1000">
+        <div class="bg-white p-10 rounded-xl shadow-2xl w-full max-w-lg text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Pilih Folder</h1>
+            <form action="/process_folder" method="POST" class="space-y-6">
+                <div class="flex flex-col text-left">
+                    <label for="folder" class="text-gray-700 font-medium mb-2">Folder Path:</label>
+                    <input type="text" id="folder" name="folder" class="p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
-
-                <div class="flex justify-center">
-                    <button type="submit"
-                        class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200">Proses</button>
-                </div>
+                <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Proses</button>
             </form>
         </div>
     </div>
 
-    <!-- Link ke file JavaScript -->
-    <script src="/static/script.js"></script>
+    <!-- JavaScript untuk waktu dan animasi -->
+    <script>
+        // Menampilkan waktu lokal Indonesia
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('time').textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
 
+        // Animasi muncul setelah scroll
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+                document.getElementById("form-container").classList.add("opacity-100");
+            }, 300);
+        });
+
+        // Fungsi untuk smooth scroll yang lebih halus
+        function smoothScrollToForm() {
+            const target = document.getElementById("form-container");
+            window.scrollTo({
+                top: target.offsetTop,
+                behavior: "smooth"
+            });
+        }
+    </script>
 </body>
-
 </html>
